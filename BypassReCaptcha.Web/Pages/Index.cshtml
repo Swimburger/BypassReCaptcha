@@ -1,0 +1,48 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+@section Head{
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+}
+
+<form method="post">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger" role="alert" asp-validation-summary="All">
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input asp-for="ContactFormViewModel.FirstName" class="form-control" id="firstName" required>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input asp-for="ContactFormViewModel.LastName" class="form-control" id="lastName" required>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="emailAddress" class="form-label">Email Address</label>
+        <input asp-for="ContactFormViewModel.EmailAddress" type="email" class="form-control" id="emailAddress"
+            placeholder="name@example.com" required>
+    </div>
+    <div class="mb-3">
+        <label for="question" class="form-label">Question</label>
+        <textarea asp-for="ContactFormViewModel.Question" class="form-control" id="question" rows="3"
+            required></textarea>
+    </div>
+    @if (!Model.BypassReCaptcha)
+    {
+        <div class="mb-3">
+            <div class="g-recaptcha" data-sitekey="@Model.ReCaptchaSiteKey"></div>
+        </div>
+    }
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

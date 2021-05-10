@@ -1,0 +1,20 @@
+﻿@page
+@model BypassReCaptchaModel
+@{
+    ViewData["Title"] = "Bypass ReCaptcha";
+}
+
+@if(!Model.BypassSucceeded)
+{
+    <form method="post">
+        <div class="mb-3">
+            <label for="secret" class="form-label">Secret</label>
+            <input asp-for="BypassSecret" class="form-control" id="secret" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+}
+else
+{
+    <div>Success! 🎉</div>
+}
