@@ -4,6 +4,11 @@
     ViewData["Title"] = "Bypass ReCaptcha";
 }
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger" role="alert" asp-validation-summary="All">
+    </div>
+}
 @if(!Model.BypassSucceeded)
 {
     <form method="post">
