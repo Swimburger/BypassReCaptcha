@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -40,7 +41,7 @@ namespace BypassReCaptcha.UiTests
             Assert.ThrowsException<AssertFailedException>(() =>
             {
                 var chromeOptions = new ChromeOptions();
-                chromeOptions.AddArguments("headless");
+                //chromeOptions.AddArguments("headless");
                 using (var driver = new ChromeDriver(chromeOptions))
                 {
                     SubmitForm(driver);
@@ -52,7 +53,7 @@ namespace BypassReCaptcha.UiTests
         public void Submitting_Form_With_BypassReCaptcha_Should_Succeed()
         {
             var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArguments("headless");
+            //chromeOptions.AddArguments("headless");
             using (var driver = new ChromeDriver(chromeOptions))
             {
                 BypassRecaptcha(driver);
@@ -65,23 +66,29 @@ namespace BypassReCaptcha.UiTests
             driver.Navigate().GoToUrl("https://localhost:5001");
             driver.FindElement(By.Id("firstName")).SendKeys("Jon");
             driver.FindElement(By.Id("lastName")).SendKeys("Doe");
+            Thread.Sleep(500);
             driver.FindElement(By.Id("emailAddress")).SendKeys("jon.doe@contoso.net");
+            Thread.Sleep(500);
             driver.FindElement(By.Id("question")).SendKeys("Hello World!");
+            Thread.Sleep(500);
 
             driver.FindElements(By.CssSelector("form button")).First().Click();
+            Thread.Sleep(2000);
 
             Assert.AreEqual("https://localhost:5001/ThankYou", driver.Url);
             Assert.IsTrue(driver.PageSource.Contains("Thank you for contacting us"));
         }
 
-private void BypassRecaptcha(IWebDriver driver)
-{
-    driver.Navigate().GoToUrl("https://localhost:5001/BypassRecaptcha");
-    driver.FindElement(By.Id("secret")).SendKeys(configuration.GetValue<string>("BypassSecret"));
+        private void BypassRecaptcha(IWebDriver driver)
+        {
+            driver.Navigate().GoToUrl("https://localhost:5001/BypassRecaptcha");
+            driver.FindElement(By.Id("secret")).SendKeys(configuration.GetValue<string>("BypassSecret"));
+            Thread.Sleep(500);
 
-    driver.FindElements(By.CssSelector("form button")).First().Click();
+            driver.FindElements(By.CssSelector("form button")).First().Click();
+            Thread.Sleep(2000);
 
-    Assert.IsTrue(driver.PageSource.Contains("Success!"));
-}
+            Assert.IsTrue(driver.PageSource.Contains("Success!"));
+        }
     }
 }
