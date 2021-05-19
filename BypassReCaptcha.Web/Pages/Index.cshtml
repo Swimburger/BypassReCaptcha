@@ -3,8 +3,11 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-@section Head{
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+@if (!Model.BypassReCaptcha)
+{
+    @section Head{
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    }
 }
 
 <form method="post">

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,7 +8,6 @@ namespace BypassReCaptcha.Web.Pages
     public class BypassReCaptchaModel : PageModel
     {
         private string serverBypassSecret;
-        public bool BypassSucceeded { get; set; }
 
         [BindProperty]
         public string BypassSecret { get; set; }
@@ -35,15 +30,13 @@ namespace BypassReCaptcha.Web.Pages
 
             if(BypassSecret != serverBypassSecret)
             {
-                ModelState.AddModelError("wrongsecret", "Wrong secret 👎");
+                return Content("Wrong secret 👎");
             }
             else
             {
                 HttpContext.Session.SetString("BypassReCaptcha", "true");
-                BypassSucceeded = true;
+                return Content("Success! 👍");
             }
-
-            return Page();
         }
     }
 }
