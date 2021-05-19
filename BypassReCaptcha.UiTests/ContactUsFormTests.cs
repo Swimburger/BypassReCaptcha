@@ -35,7 +35,7 @@ namespace BypassReCaptcha.UiTests
         }
 
         [TestMethod]
-        public void Submitting_Form_Without_ReCaptcha_Should_Fail()
+        public void Submitting_Form_Without_ReCaptcha_Should_Throw_Exception()
         {
             Assert.ThrowsException<AssertFailedException>(() =>
             {
@@ -74,14 +74,14 @@ namespace BypassReCaptcha.UiTests
             Assert.IsTrue(driver.PageSource.Contains("Thank you for contacting us"));
         }
 
-        private void BypassRecaptcha(IWebDriver driver)
-        {
-            driver.Navigate().GoToUrl("https://localhost:5001/BypassRecaptcha");
-            driver.FindElement(By.Id("secret")).SendKeys(configuration.GetValue<string>("BypassSecret"));
+private void BypassRecaptcha(IWebDriver driver)
+{
+    driver.Navigate().GoToUrl("https://localhost:5001/BypassRecaptcha");
+    driver.FindElement(By.Id("secret")).SendKeys(configuration.GetValue<string>("BypassSecret"));
 
-            driver.FindElements(By.CssSelector("form button")).First().Click();
+    driver.FindElements(By.CssSelector("form button")).First().Click();
 
-            Assert.IsTrue(driver.PageSource.Contains("Success!"));
-        }
+    Assert.IsTrue(driver.PageSource.Contains("Success!"));
+}
     }
 }
